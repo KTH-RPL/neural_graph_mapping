@@ -1,0 +1,142 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Open Sans,Arial;
+    color: #454545;
+    font-size: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1em;
+    line-height: 1.4;
+    height: fit-content;
+    width: fit-content;
+    /* text-align: justify; */
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+.last-updated {
+    font-size: 0.8em;
+    color: #999;
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header .title {
+    display: block;
+    font-size: clamp(150%, 5.9vw, 300%);
+    vertical-align: middle;
+    text-align: center;
+    font-weight: 600;
+}
+.header .authors {
+    font-size: 130%;
+    font-size: clamp(110%, 2.6vw, 130%);
+}
+.header .authors sup {
+    padding-left: 0.2em;
+}
+.header .affiliations {
+    font-size: 100%;
+}
+.header .affiliations sup {
+    padding-right: 0.2em;
+}
+.header img {
+    display: inline-block;
+    max-width: 8em;
+    border-radius: 10%;
+}
+.links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+a.link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+a.link img {
+    width: 4em;
+    height: 4em;
+    object-fit: contain;
+}
+a.link:hover {
+    background-color: #f0f0f0;
+}
+a.link:active {
+    background-color: #e0e0e0;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    border-radius: 0.5em;
+    margin-bottom: 0.5em;
+}
+.tab:first-child {
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+}
+.tab:last-child {
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+}
+.tab:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+.tab {
+    margin: 0.0em;
+    padding: 1em;
+    flex-grow: 1;
+    border: none;
+    background-color: #e0e0e0;
+}
+.tab:hover {
+    background-color: #f0f0f0;
+}
+.tab:active, .tab.active {
+    background-color: #f0f0f0;
+    box-shadow: inset 0px 0px 3px #e0e0e0;
+    outline: none;
+}
+
+.content {
+    display: flex;
+    max-width: 800px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: justify;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    /* text-align: justify; */
+}
+
+h2 {
+    margin-top: 1em;
+    margin-bottom: 0.0em;
+}
+
+video {
+    display: flex;
+    align-self: center;
+}
+
+.footer {
+    margin-top: 1em;
+}
