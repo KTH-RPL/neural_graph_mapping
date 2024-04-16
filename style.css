@@ -119,6 +119,11 @@ a.link:active {
     text-align: justify;
 }
 
+.tabcontent img {
+    object-fit: contain;
+    width: 100%;
+}
+
 .section {
     display: flex;
     flex-direction: column;
