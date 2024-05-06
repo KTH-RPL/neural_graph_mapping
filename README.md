@@ -1,6 +1,8 @@
 # Neural Graph Mapping
 
-This repository contains the official implementation for the paper [*Neural Graph Mapping for Dense SLAM with Efficient Loop Closure*](https://kth-rpl.github.io/neural_graph_mapping/) by Leonard Bruns, Jun Zhang, and Patric Jensfelt.
+This repository contains the official implementation for the paper [*Neural Graph Mapping for Dense SLAM with Efficient Loop Closure*](https://kth-rpl.github.io/neural_graph_mapping/) by Leonard Bruns, Jun Zhang, and Patric Jensfelt. By anchoring neural fields to the pose graph of a sparse visual SLAM system, we can do dense neural mapping while supporting large-scale loop closures (i.e., map deformation) without requiring full reintegration.
+
+https://github.com/KTH-RPL/neural_graph_mapping/assets/9785832/f2c45bb6-d46d-45f0-ab94-d52002e70f29
 
 ## Installation
 
