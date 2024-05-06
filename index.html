@@ -1,121 +1,209 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Neural Graph Mapping for Dense SLAM with Efficient Loop Closure</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script>
-        function openTab(tabName) {
-            var i, x;
-            x = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            document.getElementById(tabName).style.display = "flex";
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Neural Graph Mapping for Dense SLAM with Efficient Loop Closure</title>
+        <!-- Font Awesome -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+            />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
 
+        <div class="header">
+            <div class="title">Neural Graph Mapping for Dense SLAM with Efficient Loop Closure</div>
+            <div class="authors"><a href="https://roym899.github.io/">Leonard Bruns</a><sup>1</sup>, <a href="https://halajun.github.io/">Jun Zhang</a><sup>2</sup>, <a href="https://www.kth.se/profile/patric">Patric Jensfelt</a><sup>1</sup></div>
+            <div class="affiliations"><sup>1</sup>KTH Royal Institute of Technology, <sup>2</sup>TU Graz</div>
+            <div class="links">
+                <a class="link" href="https://roym899.github.io/pdfs/ngm_2024.pdf">
+                    <img src="assets/pdf.svg" alt="pdf" class="icon">
+                    <div>pdf</div>
+                </a>
+                <a class="link" href="todo">
+                    <img src="assets/arxiv.svg" alt="arXiv" class="icon">
+                    <div>arXiv</div>
+                </a>
+                <a class="link" href="https://github.com/KTH-RPL/neural_graph_mapping">
+                    <img src="assets/github.svg" alt="github" class="icon">
+                    <div>GitHub</div>
+                </a>
+            </div>
+        </div>
+        <div class="content">
 
-            x = document.getElementsByClassName("tab");
-            for (i = 0; i < x.length; i++) {
-                if (x[i].classList.contains("active")) {
-                    x[i].classList.remove("active");
+            <div id="header-carousel" data-mdb-carousel-init class="carousel slide carousel-fade" data-mdb-ride="carousel" >
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    <button
+                        type="button"
+                        data-mdb-target="#header-carousel"
+                        data-mdb-slide-to="0"
+                        class="active"
+                        aria-current="true"
+                        aria-label="Slide 1"
+                        ></button>
+                    <button
+                        type="button"
+                        data-mdb-target="#header-carousel"
+                        data-mdb-slide-to="1"
+                        aria-label="Slide 2"
+                        ></button>
+                    <button
+                        type="button"
+                        data-mdb-target="#header-carousel"
+                        data-mdb-slide-to="2"
+                        aria-label="Slide 3"
+                        ></button>
+                </div>
+
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-mdb-interval="38000">
+                        <video class="img-fluid" autoplay loop muted>
+                            <source src="assets/kintinuous.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+
+                    <div class="carousel-item" data-mdb-interval="20000">
+                        <video class="img-fluid" autoplay loop muted>
+                            <source src="assets/scannet.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+
+                    <div class="carousel-item" data-mdb-interval="14500">
+                        <video class="img-fluid" autoplay loop muted>
+                            <source src="assets/ck.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+
+                </div>
+                <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-mdb-target="#header-carousel"
+                    data-mdb-slide="prev"
+                    >
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-mdb-target="#header-carousel"
+                    data-mdb-slide="next"
+                    >
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <!-- <a href="assets/kintinuous.mp4"> -->
+            <!--     <video class="section" autoplay muted loop> -->
+            <!--         <source src="assets/kintinuous.mp4" type="video/mp4"> -->
+            <!--             Your browser does not support the video tag. -->
+            <!--     </video> -->
+            <!-- </a> -->
+            <div class="section">
+                <h2>Abstract</h2>
+                Existing neural field-based SLAM methods typically employ a single monolithic field as their scene representation. This prevents efficient incorporation of loop closure constraints and limits scalability. To address these shortcomings, we propose a neural mapping framework which anchors lightweight neural fields to the pose graph of a sparse visual SLAM system. Our approach shows the ability to integrate large-scale loop closures, while limiting necessary reintegration. Furthermore, we verify the scalability of our approach by demonstrating successful building-scale mapping taking multiple loop closures into account during the optimization, and show that our method outperforms existing state-of-the-art approaches on large scenes in terms of quality and runtime.
+            </div>
+
+            <div class="section">
+                <h2>Method</h2>
+                <div class="content">
+                    <a href="assets/framework.svg">
+                        <img src="assets/framework.svg" alt="method" class="image">
+                    </a>
+                    <ul>
+                        <li>Represent scene by a set of neural fields anchored to pose graph of sparse visual SLAM system</li>
+                        <li>Each field captures scene within a fixed radius surrounding it</li>
+                        <li>When pose graph updates, the neural fields' poses are updated with it</li>
+                        <li>For efficiency, each field is trained independently</li>
+                        <li>For queries, overlapping areas can be averaged to avoid transition artifacts</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Results</h2>
+                <div class="tabs">
+                    <button class="tab" onclick="openTab('Replica-Big')">Replica-Big</button>
+                    <button class="tab" onclick="openTab('Kintinuous')">Kintinuous</button>
+                    <button class="tab" onclick="openTab('ScanNet')">ScanNet</button>
+                    <button class="tab" onclick="openTab('Neural RGBD')">Neural RGBD</button>
+                    <button class="tab" onclick="openTab('Replica')">Replica</button>
+                </div>
+                <div id="Replica-Big" class="content tabcontent">
+                    <a href="assets/replicabig.png">
+                        <img src="assets/replicabig.png" alt="results" class="image">
+                    </a>
+                </div>
+                <div id="Kintinuous" class="content tabcontent">
+                    <a href="assets/kintinuous1.png">
+                        <img src="assets/kintinuous1.png" alt="results" class="image">
+                    </a>
+                    <a href="assets/kintinuous2.png">
+                        <img src="assets/kintinuous2.png" alt="results" class="image">
+                    </a>
+                </div>
+                <div id="ScanNet" class="content tabcontent">
+                    <a href="assets/scannet.png">
+                        <img src="assets/scannet.png" alt="results" class="image">
+                    </a>
+                </div>
+                <div id="Neural RGBD" class="content tabcontent">
+                    <a href="assets/nrgbd.png">
+                        <img src="assets/nrgbd.png" alt="results" class="image">
+                    </a>
+                </div>
+                <div id="Replica" class="content tabcontent">
+                    <a href="assets/replica.png">
+                        <img src="assets/replica.png" alt="results" class="image">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            Visualizations made with <a href="https://www.rerun.io/">Rerun</a>
+        </div>
+
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
+            ></script>
+        <script>
+            function openTab(tabName) {
+                var i, x;
+                x = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
                 }
-                if (x[i].innerHTML == tabName) {
-                    x[i].classList.add("active");
+                document.getElementById(tabName).style.display = "flex";
+
+
+                x = document.getElementsByClassName("tab");
+                for (i = 0; i < x.length; i++) {
+                    if (x[i].classList.contains("selected")) {
+                        x[i].classList.remove("selected");
+                    }
+                    if (x[i].innerHTML == tabName) {
+                        x[i].classList.add("selected");
+                    }
                 }
             }
-        }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            openTab("Replica-Big");
-        });
-    </script>
-</head>
-<body>
-    <div class="header">
-        <div class="title">Neural Graph Mapping for Dense SLAM with Efficient Loop Closure</div>
-        <div class="authors"><a href="https://roym899.github.io/">Leonard Bruns</a><sup>1</sup>, <a href="https://halajun.github.io/">Jun Zhang</a><sup>2</sup>, <a href="https://www.kth.se/profile/patric">Patric Jensfelt</a><sup>1</sup></div>
-        <div class="affiliations"><sup>1</sup>KTH Royal Institute of Technology, <sup>2</sup>TU Graz</div>
-        <div class="links">
-            <a class="link" href="https://roym899.github.io/pdfs/ngm_2024.pdf">
-                <img src="assets/pdf.svg" alt="pdf" class="icon">
-                <div>pdf</div>
-            </a>
-            <a class="link" href="todo">
-                <img src="assets/arxiv.svg" alt="arXiv" class="icon">
-                <div>arXiv</div>
-            </a>
-            <a class="link" href="https://github.com/KTH-RPL/neural_graph_mapping">
-                <img src="assets/github.svg" alt="github" class="icon">
-                <div>GitHub</div>
-            </a>
-        </div>
-    </div>
-    <div class="content">
-        <video autoplay muted loop playsinline>
-            <source src="assets/cover.mp4" type="video/mp4">
-        </video>
-        <div class="section">
-            <h2>Abstract</h2>
-            Existing neural field-based SLAM methods typically employ a single monolithic field as their scene representation. This prevents efficient incorporation of loop closure constraints and limits scalability. To address these shortcomings, we propose a neural mapping framework which anchors lightweight neural fields to the pose graph of a sparse visual SLAM system. Our approach shows the ability to integrate large-scale loop closures, while limiting necessary reintegration. Furthermore, we verify the scalability of our approach by demonstrating successful building-scale mapping taking multiple loop closures into account during the optimization, and show that our method outperforms existing state-of-the-art approaches on large scenes in terms of quality and runtime. 
-        </div>
+            document.querySelector('#header-carousel').addEventListener('slide.bs.carousel', function (event) {
+                var activeVideo = event.relatedTarget.querySelector('video');
+                if (activeVideo) {
+                    activeVideo.currentTime = 0; // Reset the video
+                }
+            });
 
-        <div class="section">
-            <h2>Method</h2>
-            <div class="content">
-                <a href="assets/framework.svg">
-                    <img src="assets/framework.svg" alt="method" class="image">
-                </a>
-                <ul>
-                    <li>Represent scene by a set of neural fields anchored to pose graph of sparse visual SLAM system</li>
-                    <li>Each field captures scene within a fixed radius surrounding it</li>
-                    <li>When pose graph updates, the neural fields' poses are updated with it</li>
-                    <li>For efficiency, each field is trained independently</li>
-                    <li>For queries, overlapping areas can be averaged to avoid transition artifacts</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Results</h2>
-            <div class="tabs">
-                <button class="tab" onclick="openTab('Replica-Big')">Replica-Big</button>
-                <button class="tab" onclick="openTab('Kintinuous')">Kintinuous</button>
-                <button class="tab" onclick="openTab('ScanNet')">ScanNet</button>
-                <button class="tab" onclick="openTab('Neural RGBD')">Neural RGBD</button>
-                <button class="tab" onclick="openTab('Replica')">Replica</button>
-            </div>
-            <div id="Replica-Big" class="content tabcontent">
-                <a href="assets/replicabig.png">
-                    <img src="assets/replicabig.png" alt="results" class="image">
-                </a>
-            </div>
-            <div id="Kintinuous" class="content tabcontent">
-                <a href="assets/kintinuous1.png">
-                    <img src="assets/kintinuous1.png" alt="results" class="image">
-                </a>
-                <a href="assets/kintinuous2.png">
-                    <img src="assets/kintinuous2.png" alt="results" class="image">
-                </a>
-            </div>
-            <div id="ScanNet" class="content tabcontent">
-                <a href="assets/scannet.png">
-                    <img src="assets/scannet.png" alt="results" class="image">
-                </a>
-            </div>
-            <div id="Neural RGBD" class="content tabcontent">
-                <a href="assets/nrgbd.png">
-                    <img src="assets/nrgbd.png" alt="results" class="image">
-                </a>
-            </div>
-            <div id="Replica" class="content tabcontent">
-                <a href="assets/replica.png">
-                    <img src="assets/replica.png" alt="results" class="image">
-                </a>
-            </div>
-        </div>
-
-    </div>
-    <div class="footer">
-        Visualizations made with <a href="https://www.rerun.io/">Rerun</a>
-    </div>
-</body>
+            document.addEventListener("DOMContentLoaded", function() {
+                openTab("Replica-Big");
+            });
+        </script>
+    </body>

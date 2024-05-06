@@ -4,7 +4,7 @@ body {
     align-items: center;
     font-family: Open Sans,Arial;
     color: #454545;
-    font-size: 100%;
+    font-size: 100% !important;
     max-width: 1000px;
     margin: 0 auto;
     padding: 1em;
@@ -27,7 +27,7 @@ body {
 }
 .header .title {
     display: block;
-    font-size: clamp(150%, 5.9vw, 300%);
+    font-size: clamp(150%, 5.7vw, 300%);
     vertical-align: middle;
     text-align: center;
     font-weight: 600;
@@ -48,7 +48,7 @@ body {
 .header img {
     display: inline-block;
     max-width: 8em;
-    border-radius: 10%;
+    border-radius: 0.5em;
 }
 .links {
     display: flex;
@@ -82,15 +82,16 @@ a.link:active {
     justify-content: stretch;
     align-items: stretch;
     border-radius: 0.5em;
+    margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
 .tab:first-child {
-    border-top-left-radius: 1em;
-    border-bottom-left-radius: 1em;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
 }
 .tab:last-child {
-    border-top-right-radius: 1em;
-    border-bottom-right-radius: 1em;
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
 }
 .tab:not(:last-child) {
     border-right: none; /* Prevent double borders */
@@ -105,9 +106,14 @@ a.link:active {
 .tab:hover {
     background-color: #f0f0f0;
 }
-.tab:active, .tab.active {
+.tab:active {
+    background-color: #a0a0a0;
+    /* box-shadow: inset 0px 0px 3px #e0e0e0; */
+    outline: none;
+}
+.tab.selected {
     background-color: #f0f0f0;
-    box-shadow: inset 0px 0px 3px #e0e0e0;
+    /* box-shadow: inset 0px 0px 3px #e0e0e0; */
     outline: none;
 }
 
@@ -122,6 +128,8 @@ a.link:active {
 .content img {
     object-fit: contain;
     width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .section {
@@ -129,19 +137,33 @@ a.link:active {
     flex-direction: column;
     margin-top: 0em;
     margin-bottom: 0em;
-    /* text-align: justify; */
+    width: 100%;
 }
 
 h2 {
-    margin-top: 1em;
+    margin-top: 0.5em;
     margin-bottom: 0.0em;
+    font-size: 1.6em;
 }
 
 video {
     display: flex;
     align-self: center;
+    border-radius: 0.5em;
 }
 
 .footer {
     margin-top: 1em;
 }
+.carousel-indicators {
+    height: 6.6%;
+    margin-bottom: 0;
+}
+.carousel-indicators [data-mdb-target] {
+    border-top: 0;
+    border-bottom: 0;
+    margin: auto 3px;
+    height: 6px;
+    width: 41px;
+}
+
