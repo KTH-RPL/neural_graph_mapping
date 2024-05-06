@@ -37,7 +37,7 @@ body {
     font-size: clamp(110%, 2.6vw, 130%);
 }
 .header .authors sup {
-    padding-left: 0.2em;
+    padding-left: 0.1em;
 }
 .header .affiliations {
     font-size: 100%;
@@ -119,7 +119,7 @@ a.link:active {
     text-align: justify;
 }
 
-.tabcontent img {
+.content img {
     object-fit: contain;
     width: 100%;
 }

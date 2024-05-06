@@ -44,7 +44,7 @@
                 <img src="assets/arxiv.svg" alt="arXiv" class="icon">
                 <div>arXiv</div>
             </a>
-            <a class="link" href="https://github.com/roym899/neural_graph_mapping">
+            <a class="link" href="https://github.com/KTH-RPL/neural_graph_mapping">
                 <img src="assets/github.svg" alt="github" class="icon">
                 <div>GitHub</div>
             </a>
@@ -61,7 +61,18 @@
 
         <div class="section">
             <h2>Method</h2>
-            bla
+            <div class="content">
+                <a href="assets/framework.svg">
+                    <img src="assets/framework.svg" alt="method" class="image">
+                </a>
+                <ul>
+                    <li>Represent scene by a set of neural fields anchored to pose graph of sparse visual SLAM system</li>
+                    <li>Each field captures scene within a fixed radius surrounding it</li>
+                    <li>When pose graph updates, the neural fields' poses are updated with it</li>
+                    <li>For efficiency, each field is trained independently</li>
+                    <li>For queries, overlapping areas can be averaged to avoid transition artifacts</li>
+                </ul>
+            </div>
         </div>
 
         <div class="section">
@@ -74,20 +85,32 @@
                 <button class="tab" onclick="openTab('Replica')">Replica</button>
             </div>
             <div id="Replica-Big" class="content tabcontent">
-                <img src="assets/replicabig.png" alt="results" class="image">
+                <a href="assets/replicabig.png">
+                    <img src="assets/replicabig.png" alt="results" class="image">
+                </a>
             </div>
             <div id="Kintinuous" class="content tabcontent">
-                <img src="assets/kintinuous1.png" alt="results" class="image">
-                <img src="assets/kintinuous2.png" alt="results" class="image">
+                <a href="assets/kintinuous1.png">
+                    <img src="assets/kintinuous1.png" alt="results" class="image">
+                </a>
+                <a href="assets/kintinuous2.png">
+                    <img src="assets/kintinuous2.png" alt="results" class="image">
+                </a>
             </div>
             <div id="ScanNet" class="content tabcontent">
-                <img src="assets/scannet.png" alt="results" class="image">
+                <a href="assets/scannet.png">
+                    <img src="assets/scannet.png" alt="results" class="image">
+                </a>
             </div>
             <div id="Neural RGBD" class="content tabcontent">
-                <img src="assets/nrgbd.png" alt="results" class="image">
+                <a href="assets/nrgbd.png">
+                    <img src="assets/nrgbd.png" alt="results" class="image">
+                </a>
             </div>
             <div id="Replica" class="content tabcontent">
-                <img src="assets/replica.png" alt="results" class="image">
+                <a href="assets/replica.png">
+                    <img src="assets/replica.png" alt="results" class="image">
+                </a>
             </div>
         </div>
 
