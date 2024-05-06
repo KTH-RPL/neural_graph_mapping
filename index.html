@@ -99,12 +99,6 @@
                 </button>
             </div>
 
-            <!-- <a href="assets/kintinuous.mp4"> -->
-            <!--     <video class="section" autoplay muted loop> -->
-            <!--         <source src="assets/kintinuous.mp4" type="video/mp4"> -->
-            <!--             Your browser does not support the video tag. -->
-            <!--     </video> -->
-            <!-- </a> -->
             <div class="section">
                 <h2>Abstract</h2>
                 Existing neural field-based SLAM methods typically employ a single monolithic field as their scene representation. This prevents efficient incorporation of loop closure constraints and limits scalability. To address these shortcomings, we propose a neural mapping framework which anchors lightweight neural fields to the pose graph of a sparse visual SLAM system. Our approach shows the ability to integrate large-scale loop closures, while limiting necessary reintegration. Furthermore, we verify the scalability of our approach by demonstrating successful building-scale mapping taking multiple loop closures into account during the optimization, and show that our method outperforms existing state-of-the-art approaches on large scenes in terms of quality and runtime.
@@ -116,7 +110,7 @@
                     <a href="assets/framework.svg">
                         <img src="assets/framework.svg" alt="method" class="image">
                     </a>
-                    <ul>
+                    <ul class="method-bullets">
                         <li>Represent scene by a set of neural fields anchored to pose graph of sparse visual SLAM system</li>
                         <li>Each field captures scene within a fixed radius surrounding it</li>
                         <li>When pose graph updates, the neural fields' poses are updated with it</li>

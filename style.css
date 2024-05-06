@@ -167,3 +167,16 @@ video {
     width: 41px;
 }
 
+.method-bullets {
+    background-color: #ffecb3;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+}
+
+button {
+    color: #454545;
+    font-size: 100% !important;
+}
