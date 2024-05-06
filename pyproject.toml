@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools", "wheel", "torch"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neural_graph_mapping"
+version = "0.1.0"
+requires-python = ">=3.10"
+authors = [
+    {name = "Leonard Bruns", email = "leonardb@kth.se"},
+    {name = "Jun Zhang"},
+    {name = "Patric Jensfelt"},
+]
+description="Efficient neural field-based mapping relative to a pose graph"
+readme = "README.md"
+dependencies = [
+    "einops",
+    "evo",
+    "pytorch3d @ git+https://github.com/facebookresearch/pytorch3d.git@47d5dc88247035b35ca3cfce159565f92d8fbb75",
+    "permutohedral_encoding @ git+https://github.com/roym899/permutohedral_encoding.git@bf445adb4b3aa77eeff42d3443bf04b6aad8338b",
+    "numpy",
+    "open3d",
+    "Pillow",
+    "pyrender",
+    "rerun-sdk",
+    "scipy",
+    "tabulate",
+    "torch>=2.2",
+    "torchmetrics[image]",
+    "tqdm",
+    "wandb",
+    "yoco>=1.1.0",
+]
+
+[project.urls]
+Homepage = "https://roym899.github.io/neural_graph_mapping/"
+Repository = "https://github.com/roym899/neural_graph_mapping"
+
+[tool.black]
+line-length = 95
+
+[tool.ruff]
+line-length = 95
+select = ["E", "F", "ANN", "D", "W"]
+ignore = ["ANN101", "D417", "ANN003"]
+
+[tool.ruff.pycodestyle]
+max-doc-length = 95
+
+[tool.ruff.pydocstyle]
+convention = "google"

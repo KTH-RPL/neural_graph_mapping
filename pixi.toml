@@ -1,0 +1,166 @@
+[project]
+name = "neural_graph_mapping"
+channels = ["pytorch", "nvidia", "conda-forge"]
+platforms = ["linux-64"]
+
+[activation]
+scripts = [".pixi.sh"]
+
+[system-requirements]
+libc = { family="glibc", version="2.31" }  # required for Open3D and Rerun
+
+[dependencies]
+python = "3.10.*"
+# need to specify torch here because Pytorch3D does not properly specify its dependencies
+# see https://github.com/facebookresearch/pytorch3d/issues/1419
+pytorch = {version="2.2.*", channel="pytorch"}
+torchvision = {version=">=0.17.2,<0.18", channel="pytorch"}
+pytorch-cuda = {version="12.1.*", channel="pytorch"}
+cuda = {version="12.1.*", channel="nvidia"}
+cuda-nvcc = {version="12.1.*", channel="nvidia"}
+wget = ">=1.21.4,<1.22"
+wheel = ">=0.43.0,<0.44"
+pip = ">=24.0,<25"
+
+# Install pypi depedencies manually via pip3, this should be replaced with direct pypi dependencies in the future.
+# This is necessary because torch extensions currently don't install via uv (which is used by pixi).
+[tasks.install_ngm]
+cmd = "python -m pip install --no-build-isolation -e ."
+
+[tasks.download_replica_big]
+cmd = """
+test -e "$NGM_DATA_DIR/replica_big"
+|| (
+    mkdir -p $NGM_DATA_DIR
+    && cd $NGM_DATA_DIR
+    && wget -nc https://zenodo.org/records/11060329/files/replica_big_data.zip
+    && unzip -n replica_big_data.zip
+    && wget -nc https://zenodo.org/records/11060329/files/replica_big_slam.zip
+    && unzip -n replica_big_slam.zip
+   )
+"""
+
+[tasks.download_replica_imap]
+cmd = """
+test -e "$NGM_DATA_DIR/replica_imap"
+|| (
+    mkdir -p $NGM_DATA_DIR
+    && cd $NGM_DATA_DIR
+    && wget -nc https://cvg-data.inf.ethz.ch/nice-slam/data/Replica.zip
+    && unzip -n Replica.zip
+    && mv Replica replica_imap
+    && wget -nc https://zenodo.org/records/11060329/files/replica_slam.zip
+    && unzip -n replica_slam.zip
+    && wget -nc https://zenodo.org/records/11068446/files/replica_coslam_eval.zip
+    && unzip -n replica_coslam_eval.zip
+    && rsync -a Replica/ replica_imap/
+    && rm -r Replica
+   )
+"""
+
+[tasks.download_kintinuous]
+cmd = """
+test -e "$NGM_DATA_DIR/kintinuous"
+|| (
+    mkdir -p $NGM_DATA_DIR
+    && cd $NGM_DATA_DIR
+    && wget -nc https://zenodo.org/records/11060329/files/kintinuous_data.zip
+    && unzip -n kintinuous_data.zip
+    && wget -nc https://zenodo.org/records/11068446/files/replica_coslam_eval.zip
+    && unzip -n kintinuous_slam.zip
+   )
+"""
+
+[tasks.download]
+cmd = """
+test -e "$NGM_DATA_DIR/nrgbd"
+|| (
+    mkdir -p $NGM_DATA_DIR
+    && cd $NGM_DATA_DIR
+    && wget -nc http://kaldir.vc.in.tum.de/neural_rgbd/neural_rgbd_data.zip
+    && unzip -n neural_rgbd_data.zip -d neural_rgbd_data
+    && wget -nc https://zenodo.org/records/11060329/files/nrgbd_slam.zip
+    && unzip -n nrgbd_slam.zip
+    && wget -nc https://zenodo.org/records/11068446/files/nrgbd_coslam_eval.zip
+    && unzip -n nrgbd_coslam_eval.zip
+    && wget -nc http://kaldir.vc.in.tum.de/neural_rgbd/meshes.zip
+    && unzip -n meshes.zip '*/gt_mesh.ply' -x '*icl*' -d neural_rgbd_data
+    && mv neural_rgbd_data nrgbd
+   )
+"""
+
+[tasks.replica_big_apartment0]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_big_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_big/ --dataset_config.scene apartment0 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_big", "install_ngm"]
+[tasks.replica_big_apartment1]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_big_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_big/ --dataset_config.scene apartment1 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_big", "install_ngm"]
+[tasks.replica_big_apartment2]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_big_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_big/ --dataset_config.scene apartment2 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_big", "install_ngm"]
+[tasks.replica_big_all]
+depends_on = ["replica_big_apartment0", "replica_big_apartment1", "replica_big_apartment2"]
+
+[tasks.replica_imap_room0]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene room0 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_room1]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene room1 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_room2]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene room2 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_office0]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene office0 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_office1]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene office1 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_office2]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene office2 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_office3]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene office3 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_office4]
+cmd = "python -m neural_graph_mapping.run_mapping --config replica_imap_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/replica_imap/ --dataset_config.scene office4 $NGM_EXTRA_ARGS"
+depends_on = ["download_replica_imap", "install_ngm"]
+[tasks.replica_imap_all]
+depends_on = ["replica_imap_room0", "replica_imap_room1", "replica_imap_room2", "replica_imap_office0", "replica_imap_office1", "replica_imap_office2", "replica_imap_office3", "replica_imap_office4"]
+
+[tasks.kintinuous]
+cmd = "python -m neural_graph_mapping.run_mapping --config kintinuous_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/kintinuous/ --truncation_distance 0.2 $NGM_EXTRA_ARGS"
+depends_on = ["download_kintinuous", "install_ngm"]
+
+[tasks.nrgbd_br]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene breakfast_room $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_ck]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene complete_kitchen $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_gr]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene green_room $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_gwr]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene grey_white_room $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_ki]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene kitchen $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_ma]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene morning_apartment $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_sc]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene staircase $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_tg]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene thin_geometry $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_wr]
+cmd = "python -m neural_graph_mapping.run_mapping --config nrgbd_dataset.yaml neural_graph_map.yaml coslam_eval.yaml --dataset_config.root_dir $NGM_DATA_DIR/nrgbd/ --dataset_config.scene whiteroom $NGM_EXTRA_ARGS"
+depends_on = ["download", "install_ngm"]
+[tasks.nrgbd_all]
+depends_on = ["nrgbd_br", "nrgbd_ck", "nrgbd_gr", "nrgbd_gwr", "nrgbd_ma", "nrgbd_tg", "nrgbd_wr", "nrgbd_sc", "nrgbd_ki"]
+
+[tasks.all]
+depends_on = ["kintinuous", "replica_imap_all", "replica_big_all", "nrgbd_all"]

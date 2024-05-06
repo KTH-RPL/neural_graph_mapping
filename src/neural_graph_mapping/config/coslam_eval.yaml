@@ -1,0 +1,5 @@
+eval_mesh_num_points: 200000
+eval_mesh_alignment: True
+eval_mesh: True
+eval_culling_method: virt_cams
+keyframes_only: True

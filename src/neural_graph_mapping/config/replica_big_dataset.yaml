@@ -1,0 +1,13 @@
+dataset_type: neural_graph_mapping.slam_datasets.replica_dataset.ReplicaDataset
+dataset_config:
+  root_dir: ~/.neural_graph_mapping/datasets/replica_big/
+  slam_final_file: orbslam2_final.txt
+  slam_c2w_file: orbslam2_c2w.json
+  slam_pg_file: orbslam2_pg.json
+  scene: apartment0
+  fps: 30
+  frame_skip: 0  # 0 means all frames are used, 1 every other, 2 every third, ...
+  scale: 1
+  prefetch: False
+  device: cpu
+  up_axis: z  # up-axis for ground-truth trajectory

@@ -1,0 +1,12 @@
+eval_ratio: 0.1  # ratio of keyframes used for evaluation
+eval_near_distance: 0.000
+eval_far_distance: 8.0
+eval_chunk_freq: 50 # every n keyframes on-line evaluation is tested on eval frames in chunk
+eval_metrics:
+  - lpips
+  - ssim
+  - psnr
+  - depthl1
+eval_crop: 10
+eval_store_details: True
+keyframes_only: True  # only use keyframes, since we are evaluating on subset of keyframes

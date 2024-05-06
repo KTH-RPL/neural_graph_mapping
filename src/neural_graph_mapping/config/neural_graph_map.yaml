@@ -1,0 +1,70 @@
+model_type: neural_graph_mapping.models.NeuralFieldSet
+model_kwargs:
+  dim_points: 3
+  field_type: neural_graph_mapping.models.NeuralField
+  field_kwargs:
+    encoding_type: neural_graph_mapping.positional_encodings.PermutohedralEncoding
+    encoding_kwargs:
+      pos_dim: 3
+      log2_hashmap_size: 12
+      nr_levels: 16
+      nr_feat_per_level: 2
+      coarsest_scale: 1
+      finest_scale: 0.0001
+      init_scale: 0.00001
+    num_layers: 1
+    dim_out: 4  # must be compatible with renderer
+    dim_mlp_out: null
+    skip_mode: no
+    initial_geometry_bias: 0.0
+    neus_initial_sd: 1.0
+  num_knn: 2
+  distance_factor: 10.0
+  field_radius: 1.0
+  scale_mode: unit_cube
+  outside_value: 1.0
+color_factor: 1.0
+geometry_factor: 20.0
+device: cuda
+learning_rate: 1e-3
+field_radius: 1.0
+termination_weight: 0.0
+photometric_weight: 1.0
+photometric_loss: l1
+depth_weight: 1.0
+depth_loss: huber
+freespace_weight: 40.0
+tsdf_weight: 50.0
+near_distance: 0.000
+far_distance: 8.0
+freeze_model: False
+pixel_block_size: 8192
+block_size: 3000000
+preview_res_factor: 0.3
+render_frames: []
+render_frame_freq: 200  # every Nth frame we render some images
+extract_mesh_frame_freq: 25 # every Nth frame we extract the mesh
+extract_mesh_frames: []  # specific frames at which to extract mesh
+extract_mesh_fields: []  # specific fields to extract mesh from
+log_iteration_freq: 100  # every Nth iteration 
+num_iterations_per_frame: 5
+rerun_vis: False
+render_vis: False
+rerun_save: null  # path or null to not save
+rerun_connect_addr: null  # ip:port or null to not connect
+geometry_mode: nrgbd
+truncation_distance: 0.1
+disable_relative_fields: False
+disable_vis: True
+loglevel: 20  # 10 for debug, 20 for INFO, 30 for WARNING
+num_train_fields: 32
+num_rays_per_field: 512
+num_samples_coarse: 8
+num_samples_depth_guided: 16
+range_depth_guided: null  # same as truncation distance
+benchmark: False
+adam_eps: 1.0e-15  # increase when getting nan during optimization
+adam_weight_decay: 0.00001
+update_mode: multi_view  # single_view or multi_view updatig
+single_field_id: null
+max_depth: null

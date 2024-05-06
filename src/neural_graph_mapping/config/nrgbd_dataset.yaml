@@ -1,0 +1,25 @@
+dataset_type: neural_graph_mapping.slam_datasets.nrgbd_dataset.NRGBDDataset
+dataset_config:
+  root_dir: ~/.neural_graph_mapping/datasets/nrgbd/
+  scene: complete_kitchen
+  images_dir: images
+  depth_dir: depth_filtered
+  poses_file: poses.txt
+  slam_final_file: orbslam2_final.txt
+  slam_c2w_file: orbslam2_c2w.json
+  slam_pg_file: orbslam2_pg.json
+  fps: 30
+  frame_skip: 0  # 0 means all frames are used, 1 every other, 2 every third, ...
+  scale: 1
+  prefetch: False
+  device: cpu
+  up_axis: y  # used for visualization
+  depth_bias: 0.0
+  camera:
+    width: 640
+    height: 480
+    fx: 554.2562584220408
+    fy: 554.2562584220408
+    cx: 319.5
+    cy: 239.5
+    pixel_center: 0.0
