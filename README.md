@@ -33,10 +33,14 @@ pip install --no-build-isolation -e .
 - Use `pip install --no-build-isolation -e .` to install the package in editable mode
 - Use `pip install -r requirements-dev.txt` to install dev tools
 
-<!-- ## Reference -->
+## Reference
 
-<!-- If you find this useful in your research, consider citing our publication: -->
-
-<!-- ``` -->
-<!-- placeholder -->
-<!-- ``` -->
+If you compare with our method or find this code useful in your research, consider citing our preprint:
+```
+@article{bruns2024neural,
+  title={Neural Graph Mapping for Dense SLAM with Efficient Loop Closure},
+  author={Bruns, Leonard and Zhang, Jun and Jensfelt, Patric},
+  journal={arXiv preprint arXiv:2405.03633},
+  year={2024}
+}
+```
