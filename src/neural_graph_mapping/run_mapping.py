@@ -1074,7 +1074,7 @@ class NeuralGraphMap:
                     "world/background",
                     rr.Mesh3D(
                         vertex_positions=sphere.vertices,
-                        indices=sphere.triangles,
+                        triangle_indices=sphere.triangles,
                         vertex_colors=sphere.vertex_colors,
                     ),
                     timeless=True,
@@ -2379,7 +2379,7 @@ class NeuralGraphMap:
                 "mesh",
                 rr.Mesh3D(
                     vertex_positions=mesh.vertices,
-                    indices=mesh.face_indices,
+                    triangle_indices=mesh.face_indices,
                     vertex_colors=mesh.vertex_colors,
                 ),
             )

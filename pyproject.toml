@@ -22,7 +22,7 @@ dependencies = [
     "open3d",
     "Pillow",
     "pyrender",
-    "rerun-sdk",
+    "rerun-sdk>=0.16",
     "scipy",
     "tabulate",
     "torch>=2.2",

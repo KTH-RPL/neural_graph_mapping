@@ -21,6 +21,7 @@ cuda-nvcc = {version="12.1.*", channel="nvidia"}
 wget = ">=1.21.4,<1.22"
 wheel = ">=0.43.0,<0.44"
 pip = ">=24.0,<25"
+gxx = "10.*"
 
 # Install pypi depedencies manually via pip3, this should be replaced with direct pypi dependencies in the future.
 # This is necessary because torch extensions currently don't install via uv (which is used by pixi).

@@ -174,7 +174,7 @@ def _evaluate_postprocessed_meshes(
             "world/gt_mesh",
             rr.Mesh3D(
                 vertex_positions=gt_mesh.vertices,
-                indices=gt_mesh.faces,
+                triangle_indices=gt_mesh.faces,
                 vertex_colors=gt_mesh.vertex_normals,
             )
         )
@@ -182,7 +182,7 @@ def _evaluate_postprocessed_meshes(
             "world/est_mesh",
             rr.Mesh3D(
                 vertex_positions=est_mesh.vertices,
-                indices=est_mesh.faces,
+                triangle_indices=est_mesh.faces,
                 vertex_normals=est_mesh.vertex_normals,
             )
         )

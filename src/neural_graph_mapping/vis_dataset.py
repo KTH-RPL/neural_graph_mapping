@@ -145,7 +145,7 @@ def run_dataset_visualization(config: DatasetVisualizerConfig) -> None:
             "world/background",
             rr.Mesh3D(
                 vertex_positions=sphere.vertices,
-                indices=sphere.triangles,
+                triangle_indices=sphere.triangles,
                 vertex_colors=sphere.vertex_colors,
             ),
             timeless=True,
@@ -164,7 +164,7 @@ def run_dataset_visualization(config: DatasetVisualizerConfig) -> None:
             "world/gt_mesh",
             rr.Mesh3D(
                 vertex_positions=gt_mesh.vertices,
-                indices=gt_mesh.face_indices,
+                triangle_indices=gt_mesh.face_indices,
                 vertex_colors=gt_mesh.vertex_colors,
                 vertex_normals=gt_mesh.vertex_normals
                 if gt_mesh.vertex_colors is None
