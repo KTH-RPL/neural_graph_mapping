@@ -171,9 +171,14 @@ video {
     background-color: #ffecb3;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    padding-left: 1.8em;
+    padding-right: 0.5em;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     border-radius: 0.5em;
+}
+.method-bullets li + li {
+  margin-top: 0.2em;
 }
 
 button {
