@@ -4,8 +4,7 @@ body {
     align-items: center;
     font-family: Open Sans,Arial;
     color: #454545;
-    font-size: 100% !important;
-    max-width: 1000px;
+    max-width: min(1000px, 100vw);
     margin: 0 auto;
     padding: 1em;
     line-height: 1.4;
@@ -15,6 +14,7 @@ body {
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
+    font-size: min(3.2vw, 1em);
 }
 .last-updated {
     font-size: 0.8em;
@@ -24,6 +24,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 100%;
 }
 .header .title {
     display: block;
@@ -54,6 +55,8 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    max-width: 100%;
+    overflow-x: auto;
 }
 a.link {
     display: flex;
@@ -84,6 +87,8 @@ a.link:active {
     border-radius: 0.5em;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+    max-width: 100%;
+    overflow-x: auto;
 }
 .tab:first-child {
     border-top-left-radius: 0.5em;
@@ -119,7 +124,7 @@ a.link:active {
 
 .content {
     display: flex;
-    max-width: 800px;
+    max-width: min(800px, 100%);
     flex-direction: column;
     align-items: stretch;
     text-align: justify;
@@ -183,5 +188,4 @@ video {
 
 button {
     color: #454545;
-    font-size: 100% !important;
 }
