@@ -18,7 +18,7 @@ pixi run all
 ```
 You can optionally add arguments to all commands by settings `NGM_EXTRA_ARGS` prior to running the command. For example, to run all datasets with visualization enabled run:
 ```bash
-export NGM_EXTRA_ARGS="--rerun_vis True" pixi run all
+NGM_EXTRA_ARGS="--rerun_vis True" pixi run all
 ```
 
 ### Manual
