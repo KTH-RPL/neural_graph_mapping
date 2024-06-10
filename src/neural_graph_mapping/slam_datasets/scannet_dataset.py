@@ -3,10 +3,11 @@
 Currently only dataset format from Neural RGB-D Reconstruction supported.
 See: https://github.com/dazinovic/neural-rgbd-surface-reconstruction
 """
+
 import os
 import pathlib
 import re
-from typing import Literal, Optional
+from typing import Literal
 
 import numpy as np
 import open3d as o3d
@@ -56,8 +57,6 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
         """Configuration dictionary for ScanNetDataset.
 
         Attributes:
-            root_dir: See class docstring.
-            scene: See class docstring.
             camera:
                 Camera parameters of the dataset. Will be passed as kwargs to
                 constructor of camera.Camera.
@@ -78,8 +77,6 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
                 Whether to prefetch the whole dataset (i.e., store in memory).
         """
 
-        root_dir: str
-        scene: str
         fps: int
         frame_skip: int
         scale: float
@@ -123,7 +120,7 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
 
     def __str__(self) -> str:
         """Return identifier name of dataset and scene."""
-        return "ScanNet_" + self._scene
+        return "ScanNet_" + self.scene
 
     @property
     def num_images(self) -> int:
@@ -133,7 +130,7 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
     @property
     def scene_dir_path(self) -> pathlib.Path:
         """Return directory for the current scene."""
-        return self._root_dir_path / self._scene
+        return self.root_dir_path / self.scene
 
     @property
     def has_gt_mesh(self) -> bool:
@@ -143,7 +140,7 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
     @property
     def gt_mesh_path(self) -> pathlib.Path:
         """Return path of ground-truth mesh or None if not available for this dataset."""
-        mesh_file_name = f"{self._scene}_vh_clean.ply"
+        mesh_file_name = f"{self.scene}_vh_clean.ply"
         mesh_file_path: pathlib.Path = self.scene_dir_path / mesh_file_name
         return mesh_file_path
 
@@ -155,12 +152,26 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
     def _parse_config(self) -> None:
         """Parse configuration dictionary into member variables."""
         super()._parse_config()
-        self._root_dir_path = pathlib.Path(self.config["root_dir"])
-        self._scene = self.config["scene"]
         self._scale = self.config["scale"]
         self._prefetch = self.config["prefetch"]
         self._fps = self.config["fps"]
         self._frame_skip = self.config["frame_skip"]
+
+    @staticmethod
+    def get_available_scenes(root_dir: str) -> list[str]:
+        """Return available scenes at the given root directory."""
+        root_dir_path = pathlib.Path(root_dir)
+        scene_dir_paths = [p for p in root_dir_path.iterdir() if p.is_dir()]
+        valid_scene_dir_paths = [
+            p
+            for p in scene_dir_paths
+            if (p / "color").exists()
+            and (p / "depth").exists()
+            and (p / "pose").exists()
+            and (p / "intrinsic").exists()
+        ]
+        scene_names = [p.name for p in valid_scene_dir_paths]
+        return scene_names
 
     def _load_gt_c2ws(self) -> torch.Tensor:
         """Load and returns matrix containing ground-truth c2w matrices."""

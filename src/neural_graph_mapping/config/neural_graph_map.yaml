@@ -43,7 +43,7 @@ block_size: 3000000
 preview_res_factor: 0.3
 render_frames: []
 render_frame_freq: 200  # every Nth frame we render some images
-extract_mesh_frame_freq: 25 # every Nth frame we extract the mesh
+extract_mesh_frame_freq: 100 # every Nth frame we extract the mesh
 extract_mesh_frames: []  # specific frames at which to extract mesh
 extract_mesh_fields: []  # specific fields to extract mesh from
 log_iteration_freq: 100  # every Nth iteration 

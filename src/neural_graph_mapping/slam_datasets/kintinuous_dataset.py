@@ -40,8 +40,6 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
         """Configuration dictionary for KintinuousDataset.
 
         Attributes:
-            root_dir: See class docstring.
-            scene: See class docstring.
             camera:
                 Camera parameters of the dataset. Will be passed as kwargs to
                 constructor of camera.Camera.
@@ -62,8 +60,6 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
                 Whether to prefetch the whole dataset (i.e., store in memory).
         """
 
-        root_dir: str
-        scene: str
         camera: dict
         fps: int
         frame_skip: int
@@ -71,8 +67,6 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
         prefetch: bool
 
     default_config: Config = {
-        "image_dir": "images",
-        "scene": "loop",
         "fps": 30,
         "frame_skip": 0,
         "scale": 1,
@@ -95,16 +89,14 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
 
     def __str__(self) -> str:
         """Return identifier name of dataset and scene."""
-        return "Kintinuous_" + self._scene
+        return "Kintinuous_" + self.scene
 
     def _parse_config(self) -> None:
         """Parse configuration dictionary into member variables."""
         super()._parse_config()
 
-        self._root_dir_path = pathlib.Path(self.config["root_dir"])
-        self._scene = self.config["scene"]
-        self._image_dir_path = self._root_dir_path / self._scene / "color"
-        self._depth_dir_path = self._root_dir_path / self._scene / "depth"
+        self._image_dir_path = self.root_dir_path / self.scene / "color"
+        self._depth_dir_path = self.root_dir_path / self.scene / "depth"
         self._num_images = len(os.listdir(self._image_dir_path))
 
         self._scale = self.config["scale"]
@@ -115,6 +107,17 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
         self.camera = camera.Camera(**self.config["camera"])
         self._c2ws = torch.eye(4, device=self.device).expand(self._get_num_images(), 4, 4)
 
+    @staticmethod
+    def get_available_scenes(root_dir: str) -> list[str]:
+        """Return available scenes at the given root directory."""
+        root_dir_path = pathlib.Path(root_dir)
+        scene_dir_paths = [p for p in root_dir_path.iterdir() if p.is_dir()]
+        valid_scene_dir_paths = [
+            p for p in scene_dir_paths if (p / "color").exists() and (p / "depth").exists()
+        ]
+        scene_names = [p.name for p in valid_scene_dir_paths]
+        return scene_names
+
     @property
     def num_images(self) -> int:
         """Return number of images in this dataset."""
@@ -123,7 +126,7 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
     @property
     def scene_dir_path(self) -> pathlib.Path:
         """Return directory for the current scene."""
-        return self._root_dir_path / self._scene
+        return self.root_dir_path / self.scene
 
     @property
     def has_gt_mesh(self) -> bool:

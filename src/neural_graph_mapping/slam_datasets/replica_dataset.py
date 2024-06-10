@@ -49,8 +49,6 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
         """Configuration dictionary for ReplicaDataset.
 
         Attributes:
-            root_dir: See class docstring.
-            scene: See class docstring.
             camera:
                 Camera parameters of the dataset. Will be passed as kwargs to
                 constructor of camera.Camera.
@@ -71,8 +69,6 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
                 Whether to prefetch the whole dataset (i.e., store in memory).
         """
 
-        root_dir: str
-        scene: str
         camera: dict
         fps: int
         frame_skip: int
@@ -114,12 +110,20 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
     def _parse_config(self) -> None:
         """Parse configuration dictionary into member variables."""
         super()._parse_config()
-        self._root_dir_path = pathlib.Path(self.config["root_dir"])
-        self._scene = self.config["scene"]
+        self.scene = self.config["scene"]
         self._scale = self.config["scale"]
         self._prefetch = self.config["prefetch"]
         self._fps = self.config["fps"]
         self._frame_skip = self.config["frame_skip"]
+
+    @staticmethod
+    def get_available_scenes(root_dir: str) -> list[str]:
+        """Return available scenes at the given root directory."""
+        root_dir_path = pathlib.Path(root_dir)
+        scene_dir_paths = [p for p in root_dir_path.iterdir() if p.is_dir()]
+        valid_scene_dir_paths = [p for p in scene_dir_paths if (p / "traj.txt").is_file()]
+        scene_names = [p.name for p in valid_scene_dir_paths]
+        return scene_names
 
     @property
     def num_images(self) -> int:
@@ -129,7 +133,7 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
     @property
     def scene_dir_path(self) -> pathlib.Path:
         """Return directory for the current scene."""
-        return self._root_dir_path / self._scene
+        return self.root_dir_path / self.scene
 
     @property
     def has_gt_mesh(self) -> bool:
@@ -142,8 +146,8 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
 
         Should only be called and / or implemented when has_gt_mesh is True.
         """
-        mesh_file_name = f"{self._scene}_mesh.ply"
-        mesh_file_path: pathlib.Path = self._root_dir_path / mesh_file_name
+        mesh_file_name = f"{self.scene}_mesh.ply"
+        mesh_file_path: pathlib.Path = self.root_dir_path / mesh_file_name
         return mesh_file_path
 
     def load_gt_mesh(self) -> slam_dataset.Mesh:
@@ -158,10 +162,10 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
 
     def __str__(self) -> str:
         """Return identifier name of dataset and scene."""
-        return "Replica_" + self._scene
+        return "Replica_" + self.scene
 
     def _load_camera(self) -> camera.Camera:
-        intrinsic_path = self._root_dir_path / "cam_params.json"
+        intrinsic_path = self.root_dir_path / "cam_params.json"
         with open(intrinsic_path) as f:
             camera_data = json.load(f)["camera"]
         self._depth_scale = camera_data["scale"]
@@ -439,21 +443,21 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
             Otherwise array of shape (2, 3). First row containing minimum point, last row
             containing maximum point.
         """
-        if self._scene == "room0":
+        if self.scene == "room0":
             return torch.tensor([[-1.0, 7.0], [-1.3, 3.7], [-1.7, 1.4]]).T
-        elif self._scene == "room1":
+        elif self.scene == "room1":
             return torch.tensor([[-5.6, 1.4], [-3.2, 2.8], [-1.6, 1.8]]).T
-        elif self._scene == "room2":
+        elif self.scene == "room2":
             return torch.tensor([[-0.9, 6.0], [-3.3, 1.8], [-3.0, 0.7]]).T
-        elif self._scene == "office0":
+        elif self.scene == "office0":
             return torch.tensor([[-2.2, 2.6], [-3.4, 2.1], [-1.4, 2.0]]).T
-        elif self._scene == "office1":
+        elif self.scene == "office1":
             return torch.tensor([[-1.9, 3.1], [-1.6, 2.6], [-1.1, 1.8]]).T
-        elif self._scene == "office2":
+        elif self.scene == "office2":
             return torch.tensor([[-3.5, 3.1], [-2.9, 5.4], [-1.3, 1.6]]).T
-        elif self._scene == "office3":
+        elif self.scene == "office3":
             return torch.tensor([[-5.2, 3.6], [-6.0, 3.3], [-1.3, 1.9]]).T
-        elif self._scene == "office4":
+        elif self.scene == "office4":
             return torch.tensor([[-1.3, 5.4], [-2.4, 4.3], [-1.3, 1.7]]).T
         else:
             return None

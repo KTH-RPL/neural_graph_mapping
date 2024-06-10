@@ -1,4 +1,5 @@
 """Script to run neural graph mapping on a SLAM dataset."""
+
 import argparse
 import copy
 import gc
@@ -150,7 +151,6 @@ class NeuralGraphMap:
         self._log_iteration_freq = config["log_iteration_freq"]
         self._num_iterations_per_frame = config["num_iterations_per_frame"]
         self._rerun_vis = config["rerun_vis"]
-        self._rerun_white_background = config.get("rerun_white_background", False)
         self._rerun_save = config["rerun_save"]
         self._rerun_connect_addr = config["rerun_connect_addr"]
         self._rerun_field_details = config.get("rerun_field_details", None)
@@ -1054,7 +1054,7 @@ class NeuralGraphMap:
         if self._rerun_vis:
             utils.rr_init(
                 "neural_graph_mapping",
-                rrd_path=self._get_run_name() + ".rrd",
+                rrd_path=self._get_run_name() + ".rrd" if self._rerun_save else None,
                 connect_addr=self._rerun_connect_addr,
             )
 
@@ -1065,20 +1065,6 @@ class NeuralGraphMap:
 
             if self._dataset.up_axis is not None:
                 rr.log("/", utils.rr_up_axis(self._dataset.up_axis), timeless=True)
-
-            if self._rerun_white_background:
-                # create large white sphere to serve as background
-                sphere = o3d.geometry.TriangleMesh.create_sphere(radius=100.0)
-                sphere.paint_uniform_color([1.0, 1.0, 1.0])
-                rr.log(
-                    "world/background",
-                    rr.Mesh3D(
-                        vertex_positions=sphere.vertices,
-                        triangle_indices=sphere.triangles,
-                        vertex_colors=sphere.vertex_colors,
-                    ),
-                    timeless=True,
-                )
 
             rr.log(
                 "slam",
@@ -2366,21 +2352,21 @@ class NeuralGraphMap:
         all_vert_colors = torch.cat(all_vert_colors)
 
         if log_to_rerun:
-            mesh = slam_dataset.Mesh(
-                vertices=all_verts, indices=all_faces, vertex_colors=all_vert_colors / 255
-            )
-            simplify_resolution = resolution + 0.01
-            while len(mesh.vertices) > 5000000:
-                print("Simplifying mesh for Rerun vis")
-                mesh.simplify(simplify_resolution)
-                simplify_resolution += 0.01
+            # mesh = slam_dataset.Mesh(
+            #     vertices=all_verts, indices=all_faces, vertex_colors=all_vert_colors / 255
+            # )
+            # simplify_resolution = resolution + 0.01
+            # while len(mesh.vertices) > 5000000:
+            #     print("Simplifying mesh for Rerun vis")
+            #     mesh.simplify(simplify_resolution)
+            #     simplify_resolution += 0.01
 
             rr.log(
                 "mesh",
                 rr.Mesh3D(
-                    vertex_positions=mesh.vertices,
-                    triangle_indices=mesh.face_indices,
-                    vertex_colors=mesh.vertex_colors,
+                    vertex_positions=all_verts.cpu(),
+                    triangle_indices=all_faces.cpu(),
+                    vertex_colors=(all_vert_colors / 255).cpu(),
                 ),
             )
 
