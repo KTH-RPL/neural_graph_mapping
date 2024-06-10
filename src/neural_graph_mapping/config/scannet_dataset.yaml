@@ -1,6 +1,6 @@
 dataset_type: neural_graph_mapping.slam_datasets.scannet_dataset.ScanNetDataset
 dataset_config:
-  root_dir: ~/.neural_graph_mapping/datasets/scannet_subset/
+  root_dir: ~/.neural_graph_mapping/datasets/scannet/
   slam_final_file: orbslam2_final.txt
   slam_c2w_file: orbslam2_c2w.json
   slam_pg_file: orbslam2_pg.json

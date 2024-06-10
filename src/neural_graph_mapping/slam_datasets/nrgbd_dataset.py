@@ -37,12 +37,10 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
         """Configuration dictionary for NRGBDDataset.
 
         Attributes:
-            root_dir: See class docstring.
             image_dir: See class docstring.
             depth_dir: See class docstring.
             poses_file: See class docstring.
             mesh_file: See class docstring.
-            scene: See class docstring.
             camera:
                 Camera parameters of the dataset. Will be passed as kwargs to
                 constructor of camera.Camera.
@@ -63,12 +61,10 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
                 Whether to prefetch the whole dataset (i.e., store in memory).
         """
 
-        root_dir: str
         image_dir: str
         depth_dir: str
         poses_file: str
         mesh_file: str
-        scene: str
         camera: dict
         fps: int
         frame_skip: int
@@ -100,25 +96,23 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
         self.config = yoco.load_config(config, current_dict=NRGBDDataset.default_config)
         super().__init__(self.config)
 
-        self._image_dir_path = self._root_dir_path / self._scene / self._image_dir_name
-        self._depth_dir_path = self._root_dir_path / self._scene / self._depth_dir_name
-        self._poses_file_path = self._root_dir_path / self._scene / self._poses_file_name
+        self._image_dir_path = self.root_dir_path / self.scene / self._image_dir_name
+        self._depth_dir_path = self.root_dir_path / self.scene / self._depth_dir_name
+        self._poses_file_path = self.root_dir_path / self.scene / self._poses_file_name
 
         self._num_images = len(sorted(os.listdir(self._image_dir_path), key=self._get_id))
         self.gt_c2ws = self._load_gt_c2ws()
 
     def __str__(self) -> str:
         """Return identifier name of dataset and scene."""
-        return "NRGBD_" + self._scene
+        return "NRGBD_" + self.scene
 
     def _parse_config(self) -> None:
         """Parse configuration dictionary into member variables."""
         super()._parse_config()
-        self._root_dir_path = pathlib.Path(self.config["root_dir"])
         self._image_dir_name = self.config["image_dir"]
         self._depth_dir_name = self.config["depth_dir"]
         self._poses_file_name = self.config["poses_file"]
-        self._scene = self.config["scene"]
         self._scale = self.config["scale"]
         self._prefetch = self.config["prefetch"]
         self._depth_bias = self.config["depth_bias"]
@@ -129,6 +123,15 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
         # FIXME should not be configurable
         self.camera = camera.Camera(**self.config["camera"])
 
+    @staticmethod
+    def get_available_scenes(root_dir: str) -> list[str]:
+        """Return available scenes at the given root directory."""
+        root_dir_path = pathlib.Path(root_dir)
+        scene_dir_paths = [p for p in root_dir_path.iterdir() if p.is_dir()]
+        valid_scene_dir_paths = [p for p in scene_dir_paths if (p / "gt_mesh.ply").exists()]
+        scene_names = [p.name for p in valid_scene_dir_paths]
+        return scene_names
+
     @property
     def num_images(self) -> int:
         """Return number of images in this dataset."""
@@ -137,7 +140,7 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
     @property
     def scene_dir_path(self) -> pathlib.Path:
         """Return directory for the current scene."""
-        return self._root_dir_path / self._scene
+        return self.root_dir_path / self.scene
 
     @property
     def has_gt_mesh(self) -> bool:
@@ -157,7 +160,6 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
         """
         o3d_mesh = o3d.io.read_triangle_mesh(str(self.gt_mesh_path))
         return slam_dataset.Mesh(o3d_mesh)
-
 
     def set_mode(self, mode: Literal["ray", "sequence"]) -> None:
         """See slam_dataset.SLAMDataset.set_mode."""
@@ -373,7 +375,7 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
         if self._depth_dir_name == "depth_filtered":
             # noise for depth_filtered is biased, here we attempt to reduce the bias
             # this is a fit based on staircase scene (polynomial a * x^2 + b *x on the error)
-            depth = 0.00123631 * depth ** 2 + (1 + 0.00073707) * depth
+            depth = 0.00123631 * depth**2 + (1 + 0.00073707) * depth
         return depth
 
     def _get_id(self, path: str) -> int:
@@ -417,19 +419,19 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
             Otherwise array of shape (2, 3). First row containing minimum point, last row
             containing maximum point.
         """
-        if self._scene == "breakfast_room":
+        if self.scene == "breakfast_room":
             return torch.tensor([[-2.4, 2.0], [-0.6, 2.9], [-1.8, 3.1]]).T
-        elif self._scene == "complete_kitchen":
+        elif self.scene == "complete_kitchen":
             return torch.tensor([[-5.7, 3.8], [-0.2, 3.3], [-6.6, 3.6]]).T
-        elif self._scene == "green_room":
+        elif self.scene == "green_room":
             return torch.tensor([[-2.6, 5.6], [-0.3, 3.0], [0.2, 5.1]]).T
-        elif self._scene == "grey_white_room":
+        elif self.scene == "grey_white_room":
             return torch.tensor([[-0.7, 5.4], [-0.2, 3.1], [-3.9, 0.8]]).T
-        elif self._scene == "morning_apartment":
+        elif self.scene == "morning_apartment":
             return torch.tensor([[-1.5, 2.2], [-0.3, 2.2], [-2.3, 1.9]]).T
-        elif self._scene == "thin_geometry":
+        elif self.scene == "thin_geometry":
             return torch.tensor([[-2.5, 1.1], [-0.3, 1.1], [0.1, 3.9]]).T
-        elif self._scene == "whiteroom":
+        elif self.scene == "whiteroom":
             return torch.tensor([[-2.6, 3.2], [-0.1, 3.6], [0.5, 8.3]]).T
         else:
             return None

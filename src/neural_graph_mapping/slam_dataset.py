@@ -87,6 +87,9 @@ class Mesh:
 class SLAMDataset(torch.utils.data.Dataset):
     """Abstract SLAM dataset.
 
+    It assumes that the dataset has a root directory and one or multiple named scenes.
+    The exact directory structure of the dataset is defined by derived classes.
+
     Two modes are defined: sequence and rays.
 
     - For sequence, each sample is a dictionary containing the following objects:
@@ -112,6 +115,8 @@ class SLAMDataset(torch.utils.data.Dataset):
     slam_c2w_dict: Optional[dict]
     slam_pg_dict: Optional[dict]
     up_axis: Optional[Literal["x", "y", "z", "-x", "-y", "-z"]]
+    root_dir_path: pathlib.Path
+    scene: str
 
     class Config(TypedDict, total=False):
         """Configuration dictionary for SLAMDataset.
@@ -120,6 +125,8 @@ class SLAMDataset(torch.utils.data.Dataset):
         dataset specific configuration.
 
         Attributes:
+            root_dir: Root directory of dataset.
+            scene: Scene name.
             slam_final_file:
                 File name of precomputed SLAM result, containing full estimated trajectory at
                 the end of the sequence.
@@ -146,10 +153,14 @@ class SLAMDataset(torch.utils.data.Dataset):
             fixed_kf_freq: How many keyframes are inserted when pg_source="fixed_frequency".
         """
 
+        root_dir: str
+        scene: str
         slam_final_file: Optional[str]
         slam_c2w_file: Optional[str]
         slam_pg_file: Optional[str]
         slam_essential_weight_threshold: int
+        up_axis: Optional[str]
+        device: str
         pose_source: Literal["slam", "gt"]
         pg_source: Literal["slam", "fixed_kf_freq"]
         fixed_kf_freq: int
@@ -195,6 +206,8 @@ class SLAMDataset(torch.utils.data.Dataset):
         Therefore, derived classes should call super()._parse_config() before parsing
         their own config or duplicate the required code.
         """
+        self.root_dir_path = pathlib.Path(self.config["root_dir"])
+        self.scene = self.config["scene"]
         self._slam_essential_weight_threshold = self.config["slam_essential_weight_threshold"]
         self._slam_final_file = self.config["slam_final_file"]
         self._slam_c2w_file = self.config["slam_c2w_file"]
@@ -221,6 +234,12 @@ class SLAMDataset(torch.utils.data.Dataset):
         search_paths = [self.scene_dir_path, "."]
         path = yoco.resolve_path(str(filepath), search_paths=search_paths)
         return pathlib.Path(path)
+
+    @staticmethod
+    @abc.abstractmethod
+    def get_available_scenes(root_dir: str) -> list[str]:
+        """Return available scenes at the given root directory."""
+        raise NotImplementedError()
 
     @property
     @abc.abstractmethod
