@@ -32,6 +32,9 @@ dependencies = [
     "yoco>=1.1.0",
 ]
 
+[tool.setuptools.package-data]
+"*" = ["*.yaml"]
+
 [project.urls]
 Homepage = "https://roym899.github.io/neural_graph_mapping/"
 Repository = "https://github.com/roym899/neural_graph_mapping"
