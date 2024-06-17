@@ -176,7 +176,7 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
     def _load_gt_c2ws(self) -> torch.Tensor:
         """Load and returns matrix containing ground-truth c2w matrices."""
         c2ws = []
-        for i in tqdm.tqdm(range(0, len(self), self._frame_skip + 1), "Load gt trajectory"):
+        for i in range(0, len(self), self._frame_skip + 1):
             c2ws.append(self._load_gt_c2w(i))
         return torch.stack(c2ws).to(self.device)
 
