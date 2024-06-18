@@ -118,10 +118,6 @@ class ScanNetDataset(slam_dataset.SLAMDataset):
 
         self.gt_c2ws = self._load_gt_c2ws()
 
-    def __str__(self) -> str:
-        """Return identifier name of dataset and scene."""
-        return "ScanNet_" + self.scene
-
     @property
     def num_images(self) -> int:
         """Return number of images in this dataset."""

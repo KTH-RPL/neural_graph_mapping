@@ -275,6 +275,10 @@ class SLAMDataset(torch.utils.data.Dataset):
         """
         raise NotImplementedError()
 
+    def __str__(self) -> str:
+        """Return identifier name of dataset and scene."""
+        return f"{self.__class__.__name__}_{self.scene}"
+
     def gt_from_est_transform(
         self, alignment_method: Literal["origin", "umeyama"]
     ) -> torch.Tensor:

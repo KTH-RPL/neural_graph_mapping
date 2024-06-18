@@ -160,10 +160,6 @@ class ReplicaDataset(slam_dataset.SLAMDataset):
         tm_mesh: trimesh.Trimesh = trimesh.load(self.gt_mesh_path)
         return slam_dataset.Mesh(tm_mesh.as_open3d)
 
-    def __str__(self) -> str:
-        """Return identifier name of dataset and scene."""
-        return "Replica_" + self.scene
-
     def _load_camera(self) -> camera.Camera:
         intrinsic_path = self.root_dir_path / "cam_params.json"
         with open(intrinsic_path) as f:

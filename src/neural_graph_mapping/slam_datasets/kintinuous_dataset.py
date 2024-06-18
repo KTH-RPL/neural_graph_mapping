@@ -87,10 +87,6 @@ class KintinuousDataset(slam_dataset.SLAMDataset):
         self.config = yoco.load_config(config, current_dict=KintinuousDataset.default_config)
         super().__init__(self.config)
 
-    def __str__(self) -> str:
-        """Return identifier name of dataset and scene."""
-        return "Kintinuous_" + self.scene
-
     def _parse_config(self) -> None:
         """Parse configuration dictionary into member variables."""
         super()._parse_config()

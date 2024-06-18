@@ -103,10 +103,6 @@ class NRGBDDataset(slam_dataset.SLAMDataset):
         self._num_images = len(sorted(os.listdir(self._image_dir_path), key=self._get_id))
         self.gt_c2ws = self._load_gt_c2ws()
 
-    def __str__(self) -> str:
-        """Return identifier name of dataset and scene."""
-        return "NRGBD_" + self.scene
-
     def _parse_config(self) -> None:
         """Parse configuration dictionary into member variables."""
         super()._parse_config()
