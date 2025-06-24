@@ -1,191 +1,196 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Open Sans,Arial;
-    color: #454545;
-    max-width: min(1000px, 100vw);
-    margin: 0 auto;
-    padding: 1em;
-    line-height: 1.4;
-    height: fit-content;
-    width: fit-content;
-    /* text-align: justify; */
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-    font-size: min(3.2vw, 1em);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family:
+    Open Sans,
+    Arial;
+  color: #454545;
+  max-width: min(100em, 100vw);
+  margin: 0 auto;
+  padding: 1em;
+  line-height: 1.4;
+  height: fit-content;
+  width: fit-content;
+  /* text-align: justify; */
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  font-size: min(3.2vw, 1em);
 }
 .last-updated {
-    font-size: 0.8em;
-    color: #999;
+  font-size: 0.8em;
+  color: #999;
 }
 .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
 }
 .header .title {
-    display: block;
-    font-size: clamp(150%, 5.7vw, 300%);
-    vertical-align: middle;
-    text-align: center;
-    font-weight: 600;
+  display: block;
+  font-size: clamp(150%, 5.7vw, 300%);
+  vertical-align: middle;
+  text-align: center;
+  font-weight: 600;
 }
 .header .authors {
-    font-size: 130%;
-    font-size: clamp(110%, 2.6vw, 130%);
+  font-size: 130%;
+  font-size: clamp(110%, 2.6vw, 130%);
 }
 .header .authors sup {
-    padding-left: 0.1em;
+  padding-left: 0.1em;
 }
 .header .affiliations {
-    font-size: 100%;
+  font-size: 100%;
+}
+.header .venue {
+  font-size: 150%;
 }
 .header .affiliations sup {
-    padding-right: 0.2em;
+  padding-right: 0.2em;
 }
 .header img {
-    display: inline-block;
-    max-width: 8em;
-    border-radius: 0.5em;
+  display: inline-block;
+  max-width: 8em;
+  border-radius: 0.5em;
 }
 .links {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    max-width: 100%;
-    overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 100%;
+  overflow-x: auto;
 }
 a.link {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0.5em;
-    padding: 0.5em;
-    border-radius: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 0.5em;
 }
 a.link img {
-    width: 4em;
-    height: 4em;
-    object-fit: contain;
+  width: 4em;
+  height: 4em;
+  object-fit: contain;
 }
 a.link:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 a.link:active {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
 
 .tabs {
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
-    align-items: stretch;
-    border-radius: 0.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    max-width: 100%;
-    overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+  border-radius: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  max-width: 100%;
+  overflow-x: auto;
 }
 .tab:first-child {
-    border-top-left-radius: 0.5em;
-    border-bottom-left-radius: 0.5em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
 }
 .tab:last-child {
-    border-top-right-radius: 0.5em;
-    border-bottom-right-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
 }
 .tab:not(:last-child) {
-    border-right: none; /* Prevent double borders */
+  border-right: none; /* Prevent double borders */
 }
 .tab {
-    margin: 0.0em;
-    padding: 1em;
-    flex-grow: 1;
-    border: none;
-    background-color: #e0e0e0;
+  margin: 0em;
+  padding: 1em;
+  flex-grow: 1;
+  border: none;
+  background-color: #e0e0e0;
 }
 .tab:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 .tab:active {
-    background-color: #a0a0a0;
-    /* box-shadow: inset 0px 0px 3px #e0e0e0; */
-    outline: none;
+  background-color: #a0a0a0;
+  /* box-shadow: inset 0px 0px 3px #e0e0e0; */
+  outline: none;
 }
 .tab.selected {
-    background-color: #f0f0f0;
-    /* box-shadow: inset 0px 0px 3px #e0e0e0; */
-    outline: none;
+  background-color: #f0f0f0;
+  /* box-shadow: inset 0px 0px 3px #e0e0e0; */
+  outline: none;
 }
 
 .content {
-    display: flex;
-    max-width: min(800px, 100%);
-    flex-direction: column;
-    align-items: stretch;
-    text-align: justify;
+  display: flex;
+  max-width: min(80em, 100%);
+  flex-direction: column;
+  align-items: stretch;
+  text-align: justify;
 }
 
 .content img {
-    object-fit: contain;
-    width: 100%;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+  object-fit: contain;
+  width: 100%;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .section {
-    display: flex;
-    flex-direction: column;
-    margin-top: 0em;
-    margin-bottom: 0em;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  width: 100%;
 }
 
 h2 {
-    margin-top: 0.5em;
-    margin-bottom: 0.0em;
-    font-size: 1.6em;
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+  font-size: 1.6em;
 }
 
 video {
-    display: flex;
-    align-self: center;
-    border-radius: 0.5em;
+  display: flex;
+  align-self: center;
+  border-radius: 0.5em;
 }
 
 .footer {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 .carousel-indicators {
-    height: 6.6%;
-    margin-bottom: 0;
+  height: 6.6%;
+  margin-bottom: 0;
 }
 .carousel-indicators [data-mdb-target] {
-    border-top: 0;
-    border-bottom: 0;
-    margin: auto 3px;
-    height: 6px;
-    width: 41px;
+  border-top: 0;
+  border-bottom: 0;
+  margin: auto 3px;
+  height: 6px;
+  width: 41px;
 }
 
 .method-bullets {
-    background-color: #ffecb3;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    padding-left: 1.8em;
-    padding-right: 0.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    border-radius: 0.5em;
+  background-color: #ffecb3;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1.8em;
+  padding-right: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 0.5em;
 }
 .method-bullets li + li {
   margin-top: 0.2em;
 }
 
 button {
-    color: #454545;
+  color: #454545;
 }
