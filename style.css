@@ -6,7 +6,7 @@ body {
     Open Sans,
     Arial;
   color: #454545;
-  max-width: min(100em, 100vw);
+  max-width: min(70rem, 100vw);
   margin: 0 auto;
   padding: 1em;
   line-height: 1.4;
@@ -129,7 +129,7 @@ a.link:active {
 
 .content {
   display: flex;
-  max-width: min(80em, 100%);
+  max-width: min(50rem, 100%);
   flex-direction: column;
   align-items: stretch;
   text-align: justify;
